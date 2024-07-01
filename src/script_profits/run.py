@@ -3,14 +3,23 @@
 import typer
 from typing_extensions import Annotated
 
+from script_profits.calulations import calculate_profits
+
 app = typer.Typer()
-state = {"verbosity": 0}
+state = {
+    "verbosity": 0,
+    "level": {
+        "basic": 1,
+        "extended": 2,
+    },
+}
 
 
 @app.command()
 def main(
     data: Annotated[str, typer.Option(..., "--data", "-d")],
     percentage: Annotated[int, typer.Option("--percentage", "-p")] = 10,
+    column: Annotated[str, typer.Option("--column", "-c")] = "profits",
     verbosity: Annotated[
         int, typer.Option("--verbosity", "-v", count=True)
     ] = 0,
@@ -18,13 +27,14 @@ def main(
     """Main function to call the script_profit methods."""
 
     # Do stuff here.
-    print("It worked!")
+    # print("It worked!")
     if verbosity > 0:
         print(f"Verbosity: {verbosity}")
         state["verbosity"] = verbosity
-    print(f"data: {data}")
-    print(f"percentage: {percentage}")
-    # return call_function(state, data, percentage)
+        print(f"data: {data}")
+        print(f"percentage: {percentage}")
+        print(f"Column: {column}")
+    calculate_profits(state, data, percentage, column)
     # A comment?
     return 0
 
